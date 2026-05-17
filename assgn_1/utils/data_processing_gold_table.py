@@ -7,15 +7,17 @@ from pyspark.sql.types import IntegerType, StringType
 
 
 def _read_silver(snapshot_date_str, source_name, silver_directory, spark):
+    if not isinstance(silver_directory, (str, bytes, os.PathLike)):
+        raise TypeError(f"silver_directory for {source_name} must be a path string, got {type(silver_directory).__name__}")
     partition_name = f"silver_{source_name}_{snapshot_date_str.replace('-', '_')}.parquet"
     filepath = os.path.join(silver_directory, partition_name)
     return spark.read.parquet(filepath)
 
 
-def process_features_gold_table(snapshot_date_str, silver_directory, gold_directory, spark):
-    clickstream_df = _read_silver(snapshot_date_str, "clickstream", silver_directory, spark)
-    attributes_df = _read_silver(snapshot_date_str, "attributes", silver_directory, spark)
-    financials_df = _read_silver(snapshot_date_str, "financials", silver_directory, spark)
+def process_features_gold_table(snapshot_date_str, silver_directories, gold_directory, spark):
+    clickstream_df = _read_silver(snapshot_date_str, "clickstream", silver_directories["clickstream"], spark)
+    attributes_df = _read_silver(snapshot_date_str, "attributes", silver_directories["attributes"], spark)
+    financials_df = _read_silver(snapshot_date_str, "financials", silver_directories["financials"], spark)
 
     clickstream_features = [f"fe_{idx}" for idx in range(1, 21)]
     clickstream_df = clickstream_df.withColumn(
