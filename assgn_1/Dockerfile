@@ -23,4 +23,4 @@ EXPOSE 7777
 VOLUME /app
 ENV JUPYTER_ENABLE_LAB=yes
 
-CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--notebook-dir=/app"]
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=7777", "--no-browser", "--allow-root", "--notebook-dir=/app"]
