@@ -17,7 +17,7 @@ from utils.monitoring import monitor_model
 from utils.package_submission import package_code_artifacts
 
 
-default_args = {"owner": "cs611", "retries": 0}
+default_args = {"owner": "mle", "retries": 0}
 
 with DAG(
     dag_id="assignment_2_end_to_end_ml_pipeline",
@@ -26,7 +26,7 @@ with DAG(
     start_date=datetime(2026, 6, 1),
     schedule_interval=None,
     catchup=False,
-    tags=["cs611", "assignment_2", "loan_default"],
+    tags=["mle", "assignment_2", "loan_risk"],
 ) as dag:
     build_datamart_task = PythonOperator(
         task_id="build_feature_label_datamart",
