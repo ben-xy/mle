@@ -21,6 +21,11 @@ services:
       - bash
       - -c
       - |
+        echo "============================================================"
+        echo "Airflow UI: http://localhost:8080"
+        echo "Username: admin"
+        echo "Password: admin"
+        echo "============================================================"
         airflow db migrate
         airflow users create --username admin --password admin --firstname CS611 --lastname Admin --role Admin --email admin@example.com || true
         airflow scheduler &
