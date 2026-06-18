@@ -14,14 +14,13 @@ from utils.data_processing import build_datamart
 from utils.inference import run_batch_inference
 from utils.modeling import train_and_register_model
 from utils.monitoring import monitor_model
-from utils.package_submission import package_code_artifacts
 
 
 default_args = {"owner": "mle", "retries": 0}
 
 with DAG(
     dag_id="assignment_2_end_to_end_ml_pipeline",
-    description="Train, score, monitor, and package a loan default ML pipeline.",
+    description="Train, score, and monitor a loan default ML pipeline.",
     default_args=default_args,
     start_date=datetime(2026, 6, 1),
     schedule_interval=None,
@@ -48,10 +47,4 @@ with DAG(
         python_callable=monitor_model,
     )
 
-    package_task = PythonOperator(
-        task_id="package_code_artifacts",
-        python_callable=package_code_artifacts,
-        op_kwargs={"project_root": PROJECT_ROOT},
-    )
-
-    build_datamart_task >> train_model_task >> inference_task >> monitoring_task >> package_task
+    build_datamart_task >> train_model_task >> inference_task >> monitoring_task
