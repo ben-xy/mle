@@ -26,6 +26,7 @@ services:
         echo "Username: admin"
         echo "Password: admin"
         echo "============================================================"
+        echo ""
         airflow db migrate
         airflow users create --username admin --password admin --firstname CS611 --lastname Admin --role Admin --email admin@example.com || true
         airflow scheduler &
