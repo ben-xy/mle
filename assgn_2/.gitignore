@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+deck/
+datamart/
+temp/
+submit/
+airflow_logs/
+.Trash-0/

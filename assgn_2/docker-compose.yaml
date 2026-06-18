@@ -1,0 +1,28 @@
+services:
+  airflow:
+    build: .
+    container_name: assignment_2_airflow
+    ports:
+      - "8080:8080"
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "false"
+      AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "true"
+      AIRFLOW__WEBSERVER__SECRET_KEY: assignment2secret
+      AIRFLOW_UID: "50000"
+      _AIRFLOW_WWW_USER_USERNAME: admin
+      _AIRFLOW_WWW_USER_PASSWORD: admin
+    volumes:
+      - .:/opt/airflow/project
+      - ./dags:/opt/airflow/dags
+      - ./airflow_logs:/opt/airflow/logs
+    command:
+      - bash
+      - -c
+      - |
+        airflow db migrate
+        airflow users create --username admin --password admin --firstname CS611 --lastname Admin --role Admin --email admin@example.com || true
+        airflow scheduler &
+        echo "Airflow is available at http://localhost:8080 with username admin and password admin"
+        exec airflow webserver --port 8080

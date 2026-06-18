@@ -1,0 +1,85 @@
+{
+  "created_at": "2026-06-18T11:27:32Z",
+  "model_path": "model_bank/best_model.pkl",
+  "best_model": "logistic_l2_0_10",
+  "selection_metric": "auc",
+  "leaderboard": [
+    {
+      "model_name": "logistic_l2_0_10",
+      "auc": 0.7906662089611322,
+      "average_precision": 0.5917307351594754,
+      "accuracy": 0.7693593314763231
+    },
+    {
+      "model_name": "logistic_l2_0_01",
+      "auc": 0.788640552710359,
+      "average_precision": 0.6103466162062962,
+      "accuracy": 0.784958217270195
+    }
+  ],
+  "train_rows": 7179,
+  "test_rows": 1795,
+  "train_cutoff_date": "2024-12-01",
+  "label_distribution": {
+    "0": 6383,
+    "1": 2591
+  },
+  "numeric_features": [
+    "Age",
+    "Annual_Income",
+    "Monthly_Inhand_Salary",
+    "Num_Bank_Accounts",
+    "Num_Credit_Card",
+    "Interest_Rate",
+    "Num_of_Loan",
+    "Delay_from_due_date",
+    "Num_of_Delayed_Payment",
+    "Changed_Credit_Limit",
+    "Num_Credit_Inquiries",
+    "Outstanding_Debt",
+    "Credit_Utilization_Ratio",
+    "credit_history_months",
+    "Total_EMI_per_month",
+    "Amount_invested_monthly",
+    "Monthly_Balance",
+    "has_type_of_loan",
+    "debt_to_income_ratio",
+    "emi_to_salary_ratio",
+    "available_cash_after_emi",
+    "clickstream_mean",
+    "clickstream_min",
+    "clickstream_max",
+    "fe_1",
+    "fe_2",
+    "fe_3",
+    "fe_4",
+    "fe_5",
+    "fe_6",
+    "fe_7",
+    "fe_8",
+    "fe_9",
+    "fe_10",
+    "fe_11",
+    "fe_12",
+    "fe_13",
+    "fe_14",
+    "fe_15",
+    "fe_16",
+    "fe_17",
+    "fe_18",
+    "fe_19",
+    "fe_20"
+  ],
+  "categorical_features": [
+    "age_bucket",
+    "Occupation",
+    "Credit_Mix",
+    "Payment_of_Min_Amount",
+    "Payment_Behaviour"
+  ],
+  "governance": {
+    "refresh_trigger": "Retrain monthly or earlier if AUC drops below 0.70, score PSI exceeds 0.20, or observed default rate moves more than 25% from reference.",
+    "approval": "Champion model is promoted only after validation metrics and monitoring dashboard are reviewed by data science and risk stakeholders.",
+    "deployment_option": "Batch Airflow scoring is the default; the same serialized Python model object can be wrapped by a REST service for real-time underwriting."
+  }
+}
