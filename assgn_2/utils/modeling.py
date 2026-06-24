@@ -116,10 +116,14 @@ def _metrics(y_true: pd.Series, proba: np.ndarray) -> dict[str, float]:
     }
 
 
-def train_and_register_model(cutoff_date: str = TRAIN_CUTOFF_DATE) -> dict:
+def train_and_register_model(cutoff_date: str = TRAIN_CUTOFF_DATE, execution_date: str | None = None) -> dict:
     _clean_dir(MODEL_BANK_DIR)
     df = load_training_dataset()
     df = df.dropna(subset=["label"]).copy()
+    if execution_date is not None:
+        target_date = pd.to_datetime(execution_date)
+        df = df.loc[df["label_snapshot_date"].le(target_date)].copy()
+
     for col in FEATURE_COLUMNS:
         if col not in df.columns:
             raise ValueError(f"Missing model feature: {col}")

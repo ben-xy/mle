@@ -21,6 +21,20 @@ def _clean_dir(path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
 
 
+def _get_target_month(execution_date: str | None) -> pd.Period | None:
+    if execution_date is None:
+        return None
+    return pd.to_datetime(execution_date).to_period("M")
+
+
+def _get_feature_month(label_month: pd.Period) -> pd.Period:
+    return label_month - LABEL_MOB
+
+
+def _filter_by_month(df: pd.DataFrame, date_col: str, target_month: pd.Period) -> pd.DataFrame:
+    return df.loc[pd.to_datetime(df[date_col]).dt.to_period("M") == target_month]
+
+
 def _clean_numeric(series: pd.Series) -> pd.Series:
     return pd.to_numeric(series.astype(str).str.replace(r"[^0-9.\-]", "", regex=True), errors="coerce")
 
@@ -188,9 +202,20 @@ def _build_gold(silver: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
     }
 
 
-def build_datamart() -> dict:
-    _clean_dir(DATAMART_DIR)
+def build_datamart(execution_date: str | None = None) -> dict:
+    target_month = _get_target_month(execution_date)
+    if target_month is None:
+        _clean_dir(DATAMART_DIR)
+
     raw = _read_raw()
+    if target_month is not None:
+        feature_month = _get_feature_month(target_month)
+        raw = {
+            "clickstream": _filter_by_month(raw["clickstream"], "snapshot_date", feature_month),
+            "attributes": _filter_by_month(raw["attributes"], "snapshot_date", feature_month),
+            "financials": _filter_by_month(raw["financials"], "snapshot_date", feature_month),
+            "lms": _filter_by_month(raw["lms"], "snapshot_date", target_month),
+        }
 
     for source_name, df in raw.items():
         _write_partitioned_csv(df, DATAMART_DIR / "bronze" / source_name, f"bronze_{source_name}")

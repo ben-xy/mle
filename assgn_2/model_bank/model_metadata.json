@@ -1,28 +1,28 @@
 {
-  "created_at": "2026-06-18T13:49:08Z",
+  "created_at": "2026-06-23T16:56:10Z",
   "model_path": "model_bank/best_model.pkl",
   "best_model": "logistic_l2_0_10",
   "selection_metric": "auc",
   "leaderboard": [
     {
       "model_name": "logistic_l2_0_10",
-      "auc": 0.7906662089611322,
-      "average_precision": 0.5917307351594754,
-      "accuracy": 0.7693593314763231
+      "auc": 0.7681820899687083,
+      "average_precision": 0.5365032358660976,
+      "accuracy": 0.7782101167315175
     },
     {
       "model_name": "logistic_l2_0_01",
-      "auc": 0.788640552710359,
-      "average_precision": 0.6103466162062962,
-      "accuracy": 0.784958217270195
+      "auc": 0.7678631933510055,
+      "average_precision": 0.5485598959289341,
+      "accuracy": 0.7957198443579766
     }
   ],
-  "train_rows": 7179,
-  "test_rows": 1795,
+  "train_rows": 2054,
+  "test_rows": 514,
   "train_cutoff_date": "2024-12-01",
   "label_distribution": {
-    "0": 6383,
-    "1": 2591
+    "0": 1836,
+    "1": 732
   },
   "numeric_features": [
     "Age",

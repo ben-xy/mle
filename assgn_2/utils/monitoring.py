@@ -117,8 +117,13 @@ def _write_monitoring_svg(monthly: pd.DataFrame, output: Path) -> None:
     output.write_text(svg, encoding="utf-8")
 
 
-def monitor_model() -> dict:
+def monitor_model(execution_date: str | None = None) -> dict:
     predictions = _load_predictions()
+    if execution_date is not None:
+        target_month = pd.to_datetime(execution_date).to_period("M")
+        predictions = predictions.loc[
+            predictions["label_snapshot_date"].dt.to_period("M") <= target_month
+        ].copy()
     reference = pd.read_csv(MODEL_BANK_DIR / "reference_scores.csv")
     predictions["label_month"] = predictions["label_snapshot_date"].dt.strftime("%Y-%m")
 
