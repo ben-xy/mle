@@ -1,0 +1,31 @@
+services:
+  airflow:
+    build: .
+    container_name: assignment_2_airflow
+    ports:
+      - "8080:8080"
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "false"
+      AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "true"
+      AIRFLOW__WEBSERVER__SECRET_KEY: assignment2secret
+      AIRFLOW_UID: "50000"
+    volumes:
+      - .:/opt/airflow/project
+      - ./dags:/opt/airflow/dags
+      - ./airflow_logs:/opt/airflow/logs
+      - ./utils/webserver_config.py:/opt/airflow/webserver_config.py
+    command:
+      - bash
+      - -c
+      - |
+        echo "============================================================"
+        echo "Airflow UI: http://localhost:8080"
+        echo "Login is disabled for this assignment environment."
+        echo "============================================================"
+        echo ""
+        airflow db migrate
+        airflow scheduler &
+        echo "Airflow is available at http://localhost:8080 without username or password"
+        exec airflow webserver --port 8080
